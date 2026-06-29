@@ -1,8 +1,7 @@
 import { useEffect } from 'react'
 import Logo from '../components/Logo'
 
-// ponytail: placeholder until Stripe product is created
-const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/PLACEHOLDER'
+const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/28E00j4xzeAIbysg489Zm0h'
 
 export default function ConnectPage() {
   useEffect(() => {
