@@ -1,11 +1,14 @@
 import { useEffect } from 'react'
 import Logo from '../components/Logo'
 
-const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/28E00j4xzeAIbysg489Zm0h'
+const CHECKOUT_FN = 'https://kaitfbrbvsmggfxgeiub.supabase.co/functions/v1/bc-stripe-create-checkout'
 
 export default function ConnectPage() {
   useEffect(() => {
-    window.location.href = STRIPE_PAYMENT_LINK
+    fetch(CHECKOUT_FN, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' })
+      .then(r => r.json())
+      .then(d => { if (d.url) window.location.href = d.url })
+      .catch(() => { window.location.href = 'https://billingcoordinator.lawstack.co' })
   }, [])
 
   return (
@@ -18,7 +21,7 @@ export default function ConnectPage() {
       gap: '32px',
     }}>
       <Logo variant="light" />
-      <p style={{ fontSize: '16px', color: 'var(--ls-text-secondary)' }}>
+      <p style={{ fontSize: 'var(--text-sm)', color: 'var(--color-muted)' }}>
         Redirecting to checkout…
       </p>
     </div>
