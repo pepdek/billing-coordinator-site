@@ -1,8 +1,9 @@
+import { useState, useEffect } from 'react'
 import Nav from '../components/Nav'
 import Button from '../components/Button'
 import EmailMockup from '../components/EmailMockup'
 
-const HERO_TEXTURE = `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23369EA1' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+const HERO_TEXTURE = `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2314B8A6' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
 
 const TRUST_ITEMS = [
   'Read-only Clio access',
@@ -54,9 +55,9 @@ function TrustRow({ center }: { center?: boolean }) {
       flexWrap: 'wrap' as const,
       gap: '4px 0',
       justifyContent: center ? 'center' : 'flex-start',
-      fontSize: '13px',
-      color: 'var(--ls-text-tertiary)',
-      marginTop: '16px',
+      fontSize: 'var(--text-xs)',
+      color: 'var(--color-muted)',
+      marginTop: 'var(--space-4)',
     }}>
       {TRUST_ITEMS.map((item, i) => (
         <span key={item}>
@@ -71,24 +72,33 @@ function TrustRow({ center }: { center?: boolean }) {
 function SectionEyebrow({ children }: { children: string }) {
   return (
     <div style={{
-      fontSize: '13px',
+      fontSize: 'var(--text-xs)',
       fontWeight: 500,
       letterSpacing: '0.08em',
       textTransform: 'uppercase' as const,
-      color: 'var(--ls-text-secondary)',
-      marginBottom: '16px',
+      color: 'var(--color-accent)',
+      marginBottom: 'var(--space-4)',
+      fontFamily: 'var(--font-body)',
     }}>{children}</div>
   )
 }
 
 export default function LandingPage() {
+  const [showBar, setShowBar] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => setShowBar(window.scrollY > 600)
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
   return (
     <div>
       <Nav />
 
       {/* ── Hero ── */}
       <section style={{
-        minHeight: 'calc(100vh - 64px)',
+        minHeight: 'calc(100vh - 56px)',
         backgroundImage: HERO_TEXTURE,
         display: 'flex',
         alignItems: 'center',
@@ -99,39 +109,40 @@ export default function LandingPage() {
             {/* Left column */}
             <div style={{ flex: '0 0 55%' }}>
               <div className="animate-enter" style={{
-                fontSize: '13px',
+                fontSize: 'var(--text-xs)',
                 fontWeight: 500,
                 letterSpacing: '0.08em',
                 textTransform: 'uppercase' as const,
-                color: 'var(--ls-text-secondary)',
+                color: 'var(--color-accent)',
+                fontFamily: 'var(--font-body)',
               }}>
                 BILLING COORDINATOR BY LAWSTACK
               </div>
 
               <h1 className="animate-enter-d1" style={{
                 fontSize: 'clamp(40px, 4vw, 56px)',
-                fontWeight: 800,
-                letterSpacing: '-0.03em',
-                lineHeight: 0.95,
-                marginTop: '16px',
+                fontWeight: 700,
+                letterSpacing: '-0.02em',
+                lineHeight: 1.1,
+                marginTop: 'var(--space-4)',
               }}>
                 Your invoices are sitting there.
                 <br />They won't collect themselves.
               </h1>
 
               <p className="animate-enter-d2" style={{
-                fontSize: '18px',
-                lineHeight: 1.6,
-                color: 'var(--ls-text-secondary)',
+                fontSize: 'var(--text-lg)',
+                lineHeight: 1.65,
+                color: 'var(--color-body)',
                 maxWidth: '520px',
-                marginTop: '24px',
+                marginTop: 'var(--space-5)',
               }}>
                 Billing Coordinator connects to Clio, watches every unbilled time entry, overdue invoice, and trust account balance — then sends you one Monday morning brief. High-agency from day one. You approve client-facing sends. Everything else runs automatically.
               </p>
 
-              <div className="animate-enter-d3" style={{ marginTop: '40px' }}>
+              <div className="animate-enter-d3" style={{ marginTop: 'var(--space-7)' }}>
                 <Button variant="primary" href="/connect">
-                  Meet your billing coordinator — $149/month
+                  Meet Your Coordinator — $149/month
                 </Button>
                 <TrustRow />
               </div>
@@ -149,37 +160,38 @@ export default function LandingPage() {
       <section style={{ padding: '120px 0 0' }}>
         <div className="site-container">
           <SectionEyebrow>THE MATH</SectionEyebrow>
-          <h2 style={{ fontSize: '40px', fontWeight: 800, marginBottom: '48px' }}>
+          <h2 style={{ marginBottom: 'var(--space-7)' }}>
             You have three options.
           </h2>
 
-          <div style={{ display: 'flex', flexDirection: 'column' as const, gap: '32px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column' as const, gap: 'var(--space-6)' }}>
             {MATH_ITEMS.map(({ n, title, desc }) => (
-              <div key={n} style={{ display: 'flex', gap: '24px', alignItems: 'flex-start' }}>
+              <div key={n} style={{ display: 'flex', gap: 'var(--space-5)', alignItems: 'flex-start' }}>
                 <span style={{
-                  fontFamily: 'var(--ls-font-mono)',
-                  fontSize: '32px',
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: 'var(--text-3xl)',
                   fontWeight: 500,
-                  color: 'var(--ls-accent)',
+                  color: 'var(--color-accent)',
                   lineHeight: 1,
                   minWidth: '56px',
                 }}>{n}</span>
                 <div>
-                  <div style={{ fontSize: '20px', fontWeight: 700, marginBottom: '4px' }}>{title}</div>
-                  <div style={{ fontSize: '16px', color: 'var(--ls-text-secondary)' }}>{desc}</div>
+                  <div style={{ fontSize: 'var(--text-xl)', fontWeight: 700, marginBottom: '4px', color: 'var(--color-headline)' }}>{title}</div>
+                  <div style={{ fontSize: 'var(--text-base)', color: 'var(--color-body)' }}>{desc}</div>
                 </div>
               </div>
             ))}
           </div>
 
-          <div style={{
-            fontFamily: 'var(--ls-font-mono)',
-            fontSize: '20px',
-            color: 'var(--ls-accent)',
-            marginTop: '32px',
+          <p style={{
+            fontFamily: 'var(--font-mono)',
+            color: 'var(--color-accent)',
+            fontSize: 'var(--text-xl)',
+            marginTop: 'var(--space-6)',
+            letterSpacing: '0.01em',
           }}>
             The math is not close.
-          </div>
+          </p>
         </div>
       </section>
 
@@ -187,7 +199,7 @@ export default function LandingPage() {
       <section style={{ padding: '120px 0 0' }}>
         <div className="site-container">
           <SectionEyebrow>HOW IT WORKS</SectionEyebrow>
-          <h2 style={{ fontSize: '40px', fontWeight: 800, marginBottom: '48px' }}>
+          <h2 style={{ marginBottom: 'var(--space-7)' }}>
             Connect once. It runs. You read one email.
           </h2>
 
@@ -195,46 +207,57 @@ export default function LandingPage() {
             {HOW_ITEMS.map(({ n, title, desc }) => (
               <div key={n}>
                 <div style={{
-                  fontFamily: 'var(--ls-font-mono)',
-                  fontSize: '14px',
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: 'var(--text-sm)',
                   fontWeight: 500,
-                  color: 'var(--ls-accent)',
+                  color: 'var(--color-accent)',
                 }}>
                   {n}
                 </div>
-                <div style={{ fontSize: '18px', fontWeight: 600, marginTop: '12px' }}>{title}</div>
+                <div style={{ fontSize: 'var(--text-lg)', fontWeight: 600, marginTop: 'var(--space-3)', color: 'var(--color-headline)' }}>{title}</div>
                 <div style={{
-                  fontSize: '16px',
-                  color: 'var(--ls-text-secondary)',
-                  marginTop: '8px',
-                  lineHeight: 1.6,
+                  fontSize: 'var(--text-base)',
+                  color: 'var(--color-body)',
+                  marginTop: 'var(--space-2)',
+                  lineHeight: 1.65,
                 }}>{desc}</div>
               </div>
             ))}
           </div>
+
+          <p style={{
+            textAlign: 'center',
+            color: 'var(--color-muted)',
+            fontStyle: 'italic',
+            fontSize: 'var(--text-sm)',
+            marginTop: 'var(--space-7)',
+          }}>
+            Connect once. Everything else is handled.
+          </p>
         </div>
       </section>
 
       {/* ── Section 3: Dark Pitch Block ── */}
       <section style={{
         background: 'var(--ls-dark)',
-        padding: '80px 48px',
+        padding: 'var(--space-8) var(--space-7)',
         marginTop: '120px',
       }}>
         <div className="site-container" style={{ padding: 0 }}>
-          <h2 style={{ fontSize: '32px', fontWeight: 700, color: '#FFFFFF' }}>
+          <h2>
             What we read. What we never touch.
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-[80px]" style={{ marginTop: '48px' }}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-[80px]" style={{ marginTop: 'var(--space-7)' }}>
             {/* We Read */}
             <div>
               <div style={{
-                fontSize: '13px',
+                fontSize: 'var(--text-xs)',
                 letterSpacing: '0.08em',
                 textTransform: 'uppercase' as const,
-                color: 'var(--ls-accent)',
-                marginBottom: '20px',
+                color: 'var(--color-accent)',
+                marginBottom: 'var(--space-5)',
+                fontWeight: 500,
               }}>WE READ</div>
               {[
                 'Invoice amounts and due dates',
@@ -243,18 +266,19 @@ export default function LandingPage() {
                 'Client names and email addresses',
                 'Trust account balances',
               ].map((item) => (
-                <div key={item} style={{ fontSize: '16px', color: '#FFFFFF', lineHeight: 2 }}>· {item}</div>
+                <div key={item} style={{ fontSize: 'var(--text-base)', color: 'var(--color-body)', lineHeight: 2 }}>· {item}</div>
               ))}
             </div>
 
             {/* We Never Touch */}
             <div>
               <div style={{
-                fontSize: '13px',
+                fontSize: 'var(--text-xs)',
                 letterSpacing: '0.08em',
                 textTransform: 'uppercase' as const,
-                color: '#6B6B69',
-                marginBottom: '20px',
+                color: 'var(--color-muted)',
+                marginBottom: 'var(--space-5)',
+                fontWeight: 500,
               }}>WE NEVER TOUCH</div>
               {[
                 'Case facts or strategy',
@@ -263,32 +287,32 @@ export default function LandingPage() {
                 'Trust transaction records',
                 'Anything outside the billing layer',
               ].map((item) => (
-                <div key={item} style={{ fontSize: '16px', color: '#6B6B69', lineHeight: 2 }}>· {item}</div>
+                <div key={item} style={{ fontSize: 'var(--text-base)', color: 'var(--color-muted)', lineHeight: 2 }}>· {item}</div>
               ))}
             </div>
           </div>
 
           <div style={{
             textAlign: 'center' as const,
-            marginTop: '48px',
-            fontSize: '14px',
+            marginTop: 'var(--space-7)',
+            fontSize: 'var(--text-sm)',
             fontStyle: 'italic',
-            color: '#6B6B69',
+            color: 'var(--color-muted)',
           }}>
-            WSBA RPC 1.6 compliant. Read-only Clio access. No AI training on your data.
+            WSBA RPC 1.6 compliant. Read-only Clio access. No model training on your data.
           </div>
         </div>
       </section>
 
       {/* ── Section 4: Final CTA ── */}
-      <section style={{ padding: '80px 48px', textAlign: 'center' as const }}>
-        <h2 style={{ fontSize: '40px', fontWeight: 800 }}>
+      <section style={{ padding: 'var(--space-8) var(--space-7)', textAlign: 'center' as const }}>
+        <h2>
           You need a billing coordinator.
         </h2>
-        <p style={{ fontSize: '18px', color: 'var(--ls-text-secondary)', marginTop: '16px' }}>
+        <p style={{ fontSize: 'var(--text-lg)', color: 'var(--color-body)', marginTop: 'var(--space-4)' }}>
           You just can't hire one for $149/month. Until now.
         </p>
-        <div style={{ marginTop: '40px' }}>
+        <div style={{ marginTop: 'var(--space-7)' }}>
           <Button variant="primary" href="/connect">
             Connect Clio — $149/month
           </Button>
@@ -298,31 +322,59 @@ export default function LandingPage() {
 
       {/* ── Footer ── */}
       <footer style={{
-        borderTop: '1px solid var(--ls-border)',
-        padding: '48px',
+        borderTop: '1px solid var(--color-border)',
+        padding: 'var(--space-7)',
       }}>
         <div className="site-container">
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
             <div>
-              {/* ponytail: Logo import would be circular if Nav also imports it — just inline wordmark here */}
               <span style={{
-                fontSize: '13px',
+                fontSize: 'var(--text-xs)',
                 fontWeight: 700,
                 letterSpacing: '0.09em',
                 textTransform: 'uppercase' as const,
+                color: 'var(--color-headline)',
               }}>LAWSTACK</span>
             </div>
-            <div style={{ display: 'flex', gap: '24px', fontSize: '14px', color: 'var(--ls-text-secondary)' }}>
+            <div style={{ display: 'flex', gap: 'var(--space-5)', fontSize: 'var(--text-sm)', color: 'var(--color-muted)' }}>
               <a href="https://lawstack.co/legal/terms" style={{ color: 'inherit', textDecoration: 'none' }}>Terms</a>
               <a href="https://lawstack.co/legal/privacy" style={{ color: 'inherit', textDecoration: 'none' }}>Privacy</a>
               <a href="https://lawstack.co/legal/support" style={{ color: 'inherit', textDecoration: 'none' }}>Support</a>
             </div>
           </div>
-          <div style={{ fontSize: '13px', color: 'var(--ls-text-tertiary)', marginTop: '16px' }}>
+          <div style={{ fontSize: 'var(--text-xs)', color: 'var(--color-muted)', marginTop: 'var(--space-4)' }}>
             © 2026 LawStack Inc. · Tacoma, WA · Washington state corporation
           </div>
         </div>
       </footer>
+
+      {/* ── Mobile floating CTA bar ── */}
+      {showBar && (
+        <div
+          className="md:hidden"
+          style={{
+            position: 'fixed',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: '56px',
+            background: 'var(--color-cta)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 200,
+          }}
+        >
+          <a href="/connect" style={{
+            color: 'var(--color-cta-text)',
+            fontWeight: 600,
+            fontSize: 'var(--text-sm)',
+            textDecoration: 'none',
+          }}>
+            Connect Clio — $149/month
+          </a>
+        </div>
+      )}
     </div>
   )
 }
